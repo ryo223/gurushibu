@@ -20,7 +20,7 @@ public class TopPage extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("SampleWeb/index.html");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/Sign-In-Up/index.html");
 		dispatcher.forward(request, response);
 	}
 

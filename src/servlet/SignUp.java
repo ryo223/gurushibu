@@ -14,12 +14,9 @@ import javax.servlet.http.HttpSession;
 public class SignUp extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-
     public SignUp() {
         super();
-
     }
-
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -29,31 +26,28 @@ public class SignUp extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		request.setCharacterEncoding("UTF-8");
-		String mail_address = request.getParameter("mail_address");
+
 		//苗字と名前を取得
-		String last_name = request.getParameter("last_name");
 		String first_name = request.getParameter("first_name");
-		String user_name = request.getParameter("user_name");
+		String last_name = request.getParameter("last_name");
+		String mail_address = request.getParameter("mail_address");
 		String user_id = request.getParameter("user_id");
-		String user_password = request.getParameter("user_password");
+		String password = request.getParameter("password");
 		//確認用パスワード
-		String user_password2 = request.getParameter("user_password2");
+		String retype_password = request.getParameter("retype_password2");
 
-
-		/* 入力値がnullもしくは登録済み出ないかをチェック
-		if(!(user_password.equals(user_password2)) ||
-			(mail_address.equals("") || user_name.equals("") || user_id.equals("") || user_password.equals("") || user_password2.equals("") || account.userIdFind(user_id) != null)) {
-
-			response.sendRedirect("SampleWeb/SignUp.html");
+		/* パスワードと確認用パスワードが一致していて、アカウントが登録済みでないかをチェック
+		if(!(user_password.equals(user_password2)) || AccountDAOでAccountテーブルに入力されたuser_idがないかをチェック)) {
+			response.sendRedirect("SampleWeb/index.html");
 		}else {
 
-		account.accountInsert(user_id, user_name, user_password, mail_address);
+		AccountDAOにuser_id, user_name, user_password, mail_address を登録
 
- */
+		 */
 		HttpSession session = request.getSession();
 		session.setAttribute("loginUser", user_id);
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("SampleWeb/MyPage.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("SampleWeb/RestaurantSearch.jsp");
 		dispatcher.forward(request, response);
 
 		}
