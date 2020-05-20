@@ -7,8 +7,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-@WebServlet("/Login")
+@WebServlet("/SignIn")
 public class SignIn extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -17,7 +18,7 @@ public class SignIn extends HttpServlet {
 
     }
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.sendRedirect("/Article");
+
 
 	}
 
@@ -25,22 +26,19 @@ public class SignIn extends HttpServlet {
 		// リクエストパラメータの取得
 		request.setCharacterEncoding("UTF-8");
 
-		String id = request.getParameter("id");
+		String id = request.getParameter("user_id");
 		String password = request.getParameter("password");
 
-		/*入力値チェック
-		if((id, password) != null) {
+		HttpSession session = request.getSession();
+		session.setAttribute("loginUser", id);
 
-			HttpSession session = request.getSession();
-			session.setAttribute("loginUser", id);
+		//Accountテーブルに保存されているかどうかのチェック
+		//AccountDAO
 
-			response.sendRedirect("Article");
+		//ログイン成功時
+		//response.sendRedirect("RestaurantSearch");
 
-		}else {
-			response.sendRedirect("SampleWeb/Login.html");
-		}
-
-	*/
+		//ログイン失敗時
+		//response.sendRedirect("SampleWeb/index.html");
 	}
-
 }
