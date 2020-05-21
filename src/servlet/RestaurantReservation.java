@@ -28,9 +28,10 @@ public class RestaurantReservation extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String restaurant_name = request.getParameter("restaurant_name");
-		RequestDispatcher dispatcher = request.getRequestDispatcher("SampleWeb/Restaurant.jsp");
+
+		//Reservationテーブルに予約内容を保存する処理
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("Sign-In-Up/index.html");
 		dispatcher.forward(request, response);
-
-
 	}
 }

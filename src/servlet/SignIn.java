@@ -41,6 +41,6 @@ public class SignIn extends HttpServlet {
 		dispatcher.forward(request, response);
 
 		//ログイン失敗時
-		//response.sendRedirect("SampleWeb/index.html");
+		//response.sendRedirect("TopPage");
 	}
 }
