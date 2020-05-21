@@ -32,18 +32,18 @@ public class SignUp extends HttpServlet {
 		String user_id = request.getParameter("user_id");
 		String password = request.getParameter("password");
 		//確認用パスワード
-		String retype_password = request.getParameter("retype_password2");
+		String retype_password = request.getParameter("retype_password");
 
 		HttpSession session = request.getSession();
 		session.setAttribute("loginUser", user_id);
-		/* パスワードと確認用パスワードが一致していて、アカウントが登録済みでないかをチェック
-		if(!(user_password.equals(user_password2)) || AccountDAOでAccountテーブルに入力されたuser_idがないかをチェック)) {
-			response.sendRedirect("SampleWeb/index.html");
+		// パスワードと確認用パスワードが一致していて、アカウントが登録済みでないかをチェック
+		if(!password.equals(retype_password)){// || AccountDAOでAccountテーブルに入力されたuser_idがないかをチェック)) {
+			response.sendRedirect("TopPage");
 		}else {
 
-		AccountDAOにuser_id, user_name, user_password, mail_address を登録
+		//AccountDAOにuser_id, user_name, user_password, mail_address を登録
 
-		 */
+
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("SearchForm/search.html");
 		dispatcher.forward(request, response);
@@ -51,4 +51,4 @@ public class SignUp extends HttpServlet {
 		}
 
 	}
-//}
+}

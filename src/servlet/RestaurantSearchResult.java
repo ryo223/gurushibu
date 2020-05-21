@@ -24,8 +24,9 @@ public class RestaurantSearchResult extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String search_word = request.getParameter("search_word");
+
 		request.setAttribute("search_word", search_word);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("SampleWeb/RestaurantSearchResult.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("SearchForm/searchResult.jsp");
 		dispatcher.forward(request, response);
 	}
 }
