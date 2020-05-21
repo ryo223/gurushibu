@@ -21,8 +21,6 @@ public class SignUp extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 	}
-
-
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		request.setCharacterEncoding("UTF-8");
@@ -36,6 +34,8 @@ public class SignUp extends HttpServlet {
 		//確認用パスワード
 		String retype_password = request.getParameter("retype_password2");
 
+		HttpSession session = request.getSession();
+		session.setAttribute("loginUser", user_id);
 		/* パスワードと確認用パスワードが一致していて、アカウントが登録済みでないかをチェック
 		if(!(user_password.equals(user_password2)) || AccountDAOでAccountテーブルに入力されたuser_idがないかをチェック)) {
 			response.sendRedirect("SampleWeb/index.html");
@@ -44,10 +44,8 @@ public class SignUp extends HttpServlet {
 		AccountDAOにuser_id, user_name, user_password, mail_address を登録
 
 		 */
-		HttpSession session = request.getSession();
-		session.setAttribute("loginUser", user_id);
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("SampleWeb/RestaurantSearch.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("SearchForm/search.html");
 		dispatcher.forward(request, response);
 
 		}

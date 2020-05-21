@@ -2,6 +2,7 @@ package servlet;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,17 +27,18 @@ public class SignIn extends HttpServlet {
 		// リクエストパラメータの取得
 		request.setCharacterEncoding("UTF-8");
 
-		String id = request.getParameter("user_id");
+		String user_id = request.getParameter("user_id");
 		String password = request.getParameter("password");
 
 		HttpSession session = request.getSession();
-		session.setAttribute("loginUser", id);
+		session.setAttribute("loginUser", user_id);
 
 		//Accountテーブルに保存されているかどうかのチェック
 		//AccountDAO
 
 		//ログイン成功時
-		//response.sendRedirect("RestaurantSearch");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("SearchForm/search.html");
+		dispatcher.forward(request, response);
 
 		//ログイン失敗時
 		//response.sendRedirect("SampleWeb/index.html");

@@ -9,25 +9,25 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/RestaurantSearch")
-public class RestaurantSearch extends HttpServlet {
+@WebServlet("/RestaurantInformation")
+public class RestaurantInformation extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    public RestaurantSearch() {
+    public RestaurantInformation() {
         super();
-
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("SampleWeb/RestaurantSearch.jsp");
+		String restaurant_name = request.getParameter("restaurant_name");
+		request.setAttribute("restaurant_name", restaurant_name);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("SampleWeb/RestaurantInformation.jsp");
 		dispatcher.forward(request, response);
-	}
 
+	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		doGet(request, response);
-	}
 
+	}
 }
