@@ -1,7 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-    <!DOCTYPE html>
+<%
+	//レストラン名のリストをDBから取得する処理
+%>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -15,7 +19,7 @@
 <body>
 <h1><span style="color:whitesmoke">検索結果</span></h1>
 
-
+<!-- レストラン名のリストを順番に表示 -->
 
 <h2><span style="color:whitesmoke"><a class="no-color-change" href="#">ログアウト</a></span></h2>
 
