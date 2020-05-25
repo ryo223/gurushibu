@@ -3,17 +3,21 @@ package dao;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 
 public class ReservationDao {
+	String url = "jdbc:mysql://localhost:3306/gurushibu?serverTimezone=JST";
+	
+	Connection con = null;
+	PreparedStatement ps = null;
+	
 	//res_idからreservationテーブルを取得する
 	public  ReservationDto findReservation(int resId) {
-		Connection con = null;
 		ReservationDto res = new ReservationDto();
-		String url = "jdbc:mysql://localhost:3306/gurushibu?serverTimezone=JST";
 		try {
 			con = DriverManager.getConnection(url,"root","admin");
 			System.out.println("MySQLに接続できました。");
@@ -49,22 +53,21 @@ public class ReservationDao {
 
 	//予約の追加
 	public boolean addReservation(Date time, int persons, String restaurantName) {
-		Connection con = null;
-		String url = "jdbc:mysql://localhost:3306/gurushibu?serverTimezone=JST";
-		ReservationDto res = new ReservationDto();
 
         try {
         	con = DriverManager.getConnection(url,"root","admin");
         	System.out.println("MySQLに接続できました。");
-        	Statement stm = con.createStatement();
-        	String sql = "insert * into reservation values(?, ?, ?)" ;
-            ResultSet rs = stm.executeQuery(sql);
+        	con.setAutoCommit(false);
+        	String sql = "INSERT INTO reservation values(?, ?, ?)" ;
+        	ps = con.prepareStatement(sql);
+            ps.setDate(1, time);
+            ps.setInt(2, persons);
+            ps.setString(3, restaurantName);
 
-            while (rs.next()) {
-            	res.setTime(rs.getDate("1, res_time"));
-    			res.setPerson(rs.getInt("2, persons"));
-    			res.setName(rs.getString("3, restaurant_name"));
-            }
+          //INSERT文を実行する
+            ps.executeUpdate();
+            //コミット
+            con.commit();
 
         } catch (SQLException e) {
         	System.out.println("MySQLに接続できませんでした。");
