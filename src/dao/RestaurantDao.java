@@ -2,16 +2,24 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RestaurantDao {
+
+	PreparedStatement ps = null;
+	String url = "jdbc:mysql://localhost:3306/gurushibu";
+	Connection con = null;
+
 	//Restaurant_idからrestaurantテーブルを取得する
 	public  RestaurantDto findRestaurant(int restaurantId) {
-		Connection con = null;
+
 		RestaurantDto dto = new RestaurantDto();
-		String url = "jdbc:mysql://localhost:3306/gurushibu?serverTimezone=JST";
+
 		try {
 			con = DriverManager.getConnection(url,"root","admin");
 			System.out.println("MySQLに接続できました。");
@@ -26,10 +34,7 @@ public class RestaurantDao {
 			dto.setMailaddress(rs.getString("restaurant_mail_address"));
 			dto.setPhonenumber(rs.getInt("restaurant_tel_num"));
 			dto.setCategoryId(rs.getString("category_id"));
-			//System.out.println("取得結果 ->" + id ":" + category);
 
-//			}catch (InstantiationException | IllegalAccessException | ClassNotFoundException e ) {
-//				System.out.println("JDBCドライバのロードに失敗しました。");
 		}catch (SQLException e) {
 			System.out.println("MySQLに接続できませんでした。");
 		}finally {
@@ -45,25 +50,26 @@ public class RestaurantDao {
 		}
 		return dto;
 	}
+
+
 	//部分検索処理
-	public  boolean restaurantSearch(String restaurantName) {
-		Connection con = null;
-		RestaurantDto dto = new RestaurantDto();
-		String url = "jdbc:mysql://localhost:3306/gurushibu?serverTimezone=JST";
+	public List<String> restaurantSearch(String restaurantName) {
+
+		List<String> restaurantList = new ArrayList<String>();
 		try {
-			con = DriverManager.getConnection(url,"root","admin");
-			Statement stm = con.createStatement();
+			con = DriverManager.getConnection(url,"root","ryo223124830");
+
 			//前方部分が一致する処理
-			String sql = "select * from restaurant where restaurant_name like /* @prefix(restaurant_name) */'smith' escape '$' ";
-			ResultSet rs = stm.executeQuery(sql);
+			String sql = "select restaurant_name from restaurant where restaurant_name = ? ";
+			ps = con.prepareStatement(sql);
 
-			while(rs.next()) {
-				dto.setName(rs.getString("restaurant_name"));
+			ps.setString(1,restaurantName);
+			ResultSet rs = ps.executeQuery();
+
+			if(rs.next()){
+				restaurantList.add(rs.getString("restaurant_name"));
+
 			}
-			//System.out.println("取得結果 ->" + id ":" + category);
-
-//			}catch (InstantiationException | IllegalAccessException | ClassNotFoundException e ) {
-//				System.out.println("JDBCドライバのロードに失敗しました。");
 		}catch (SQLException e) {
 			System.out.println("MySQLに接続できませんでした。");
 		}finally {
@@ -77,13 +83,13 @@ public class RestaurantDao {
 				}
 			}
 		}
-		return true;
+		return restaurantList;
 	}
 	//レストラン情報一覧
 	public  boolean restaurantInfo(String restaurantName) {
-		Connection con = null;
+
 		RestaurantDto dto = new RestaurantDto();
-		String url = "jdbc:mysql://localhost:3306/gurushibu?serverTimezone=JST";
+
 		try {
 			con = DriverManager.getConnection(url,"root","admin");
 			Statement stm = con.createStatement();
@@ -97,10 +103,7 @@ public class RestaurantDao {
 				dto.setPhonenumber(rs.getInt("restaurant_tel_num"));
 				dto.setCategoryId(rs.getString("category_id"));
 			}
-			//System.out.println("取得結果 ->" + id ":" + category);
 
-//			}catch (InstantiationException | IllegalAccessException | ClassNotFoundException e ) {
-//				System.out.println("JDBCドライバのロードに失敗しました。");
 		}catch (SQLException e) {
 			System.out.println("MySQLに接続できませんでした。");
 		}finally {
