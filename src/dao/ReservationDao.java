@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -45,5 +46,40 @@ public class ReservationDao {
 		}
 		return res;
 	}
+
+	//予約の追加
+	public boolean addReservation(Date time, int persons, String restaurantName) {
+		Connection con = null;
+		String url = "jdbc:mysql://localhost:3306/gurushibu?serverTimezone=JST";
+		ReservationDto res = new ReservationDto();
+
+        try {
+        	con = DriverManager.getConnection(url,"root","admin");
+        	System.out.println("MySQLに接続できました。");
+        	Statement stm = con.createStatement();
+        	String sql = "insert * into reservation values(?, ?, ?)" ;
+            ResultSet rs = stm.executeQuery(sql);
+
+            while (rs.next()) {
+            	res.setTime(rs.getDate("1, res_time"));
+    			res.setPerson(rs.getInt("2, persons"));
+    			res.setName(rs.getString("3, restaurant_name"));
+            }
+
+        } catch (SQLException e) {
+        	System.out.println("MySQLに接続できませんでした。");
+        } finally {
+        	if(con != null) {
+				try {
+					con.close();
+				}catch(SQLException e) {
+					System.out.println("MySQLのクローズに失敗しました。");
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+        }
+        return true;
+    }
 
 }
