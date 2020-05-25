@@ -6,14 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 
 
 public class UserDao {
 
 	//ログインアカウントを探す
 	public UserDto findUser(String id) {
-		UserDto user = new UserDto();
+		UserDto user = null;
 		Connection con = null;
 		String url = "jdbc:mysql://localhost:3306/gurushibu?serverTimezone=JST";
 		try {
@@ -25,8 +24,8 @@ public class UserDao {
 
             if (!rs.next()) { return null; }
 
-            user.setId(rs.getString("user_id"));
-            user.setPassword(rs.getString("password"));
+            String userId = rs.getString("user_id");
+            String password = rs.getString("password");
 		}catch (SQLException e) {
 			System.out.println("MySQLに接続できませんでした。");
 		}finally {
@@ -44,26 +43,24 @@ public class UserDao {
 	}
 
 	//新規登録
-	public ArrayList<UserDto> getUserList() {
+	public UserDto getUser(String id, String name, String email, String password) {
 		Connection con = null;
 		String url = "jdbc:mysql://localhost:3306/gurushibu?serverTimezone=JST";
-    	ArrayList<UserDto> list = new ArrayList<UserDto>();
+    	UserDto user = null;
 
         try {
         	con = DriverManager.getConnection(url,"root","admin");
         	System.out.println("MySQLに接続できました。");
         	Statement stm = con.createStatement();
-        	String sql = "select * from users " ;
+        	String sql = "insert * into users values(?, ?, ?, ?)" ;
             ResultSet rs = stm.executeQuery(sql);
 
             while (rs.next()) {
-                UserDto ud = new UserDto();
-                ud.setId(rs.getString("user_id"));
-                ud.setName(rs.getString("user_name"));
-                ud.setMailaddress(rs.getString("mail_address"));
-                ud.setPassword(rs.getString("password"));
-                ud.setPhonenumber(rs.getInt("phone_number"));
-                list.add(ud);
+    			String userId = rs.getString("user_id");
+    			String userName = rs.getString("user_name");
+    			String mailAddress = rs.getString("mail_address");
+    			String pass = rs.getString("password");
+    			user = new UserDto(userId,userName,mailAddress,pass);
             }
 
         } catch (SQLException e) {
@@ -79,7 +76,7 @@ public class UserDao {
 				}
 			}
         }
-        return list;
+        return user;
     }
 
 	//ログイン処理
@@ -91,7 +88,7 @@ public class UserDao {
         try {
         	con = DriverManager.getConnection(url,"root","admin");
         	System.out.println("MySQLに接続できました。");
-            String sql  = "INSERT INTO users (user_id, password) VALUES (?, ?)";
+            String sql  = "select * from users (user_id, password) VALUES (?, ?)";
             PreparedStatement ps= con.prepareStatement(sql);
 
             ps.setString(1, id);
@@ -122,44 +119,5 @@ public class UserDao {
         return result;
     }
 
-	//ログアウト処理
-	public int delUser(String id, String password) {
-		Connection con = null;
-		String url = "jdbc:mysql://localhost:3306/gurushibu?serverTimezone=JST";
-    	int result = 0;
-
-        try {
-        	con = DriverManager.getConnection(url,"root","admin");
-        	System.out.println("MySQLに接続できました。");
-            String sql = "DELETE FROM users WHERE userid = ? AND password = ?";
-            PreparedStatement ps= con.prepareStatement(sql);
-
-            ps.setString(1, id);
-            ps.setString(2, password);
-
-            int r = ps.executeUpdate();
-
-            if(r != 0) {
-                System.out.println("ログアウト成功！");
-            } else {
-                System.out.println("ログアウト失敗( ﾉД`)ｼｸｼｸ…");
-            }
-
-        } catch (SQLException e) {
-        	System.out.println("MySQLに接続できませんでした。");
-        } finally {
-        	if(con != null) {
-				try {
-					con.close();
-				}catch(SQLException e) {
-					System.out.println("MySQLのクローズに失敗しました。");
-				}catch(Exception e) {
-					e.printStackTrace();
-				}
-			}
-        }
-        return result;
-
-    }
 
 }
