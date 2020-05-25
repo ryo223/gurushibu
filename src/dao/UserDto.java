@@ -7,6 +7,13 @@ public class UserDto {
     private String password;
     private int phoneNumber;
 
+	public UserDto(String userId,String userName, String mailAddress, String pass) {
+		this.userId = userId;
+
+		this.mailAddress = mailAddress;
+		this.userName = userName;
+		this.mailAddress = mailAddress;
+	}
 	public String getId() {
 		return userId;
 	}
