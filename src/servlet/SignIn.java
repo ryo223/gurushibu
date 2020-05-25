@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import dao.UserDao;
+
 @WebServlet("/SignIn")
 public class SignIn extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -19,7 +21,6 @@ public class SignIn extends HttpServlet {
 
     }
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 
 	}
 
@@ -33,14 +34,14 @@ public class SignIn extends HttpServlet {
 		HttpSession session = request.getSession();
 		session.setAttribute("loginUser", user_id);
 
-		//Accountテーブルに保存されているかどうかのチェック
-		//AccountDAO
-
-		//ログイン成功時
-		RequestDispatcher dispatcher = request.getRequestDispatcher("SearchForm/search.html");
-		dispatcher.forward(request, response);
-
+		UserDao userDao = new UserDao();
+		if(userDao.regUser(user_id, password) == true) {
+			//ログイン成功時
+			RequestDispatcher dispatcher = request.getRequestDispatcher("SearchForm/search.html");
+			dispatcher.forward(request, response);
+		}else {
 		//ログイン失敗時
-		//response.sendRedirect("TopPage");
+		response.sendRedirect("TopPage");
+		}
 	}
 }

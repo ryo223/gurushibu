@@ -5,27 +5,32 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-
 
 public class UserDao {
 
-	//ログインアカウントを探す
-	public UserDto findUser(String id) {
-		UserDto user = null;
-		Connection con = null;
-		String url = "jdbc:mysql://localhost:3306/gurushibu?serverTimezone=JST";
+	String url = "jdbc:mysql://localhost:3306/gurushibu";
+
+	Connection con = null;
+	PreparedStatement ps = null;
+	//アカウントを探す
+	public boolean findUser(String id) {
+
 		try {
-			con = DriverManager.getConnection(url,"root","admin");
+			//mysqlパスワードは各自書き換えてください。
+			con = DriverManager.getConnection(url,"root","ryo223124830");
         	System.out.println("MySQLに接続できました。");
-        	Statement stm = con.createStatement();
-        	String sql = "select * from users where user_id =" + id;
-            ResultSet rs = stm.executeQuery(sql);
+        	String sql = "select user_id from users where user_id = ?;";
 
-            if (!rs.next()) { return null; }
+            ps = con.prepareStatement(sql);
+			ps.setString(1,id);
 
-            String userId = rs.getString("user_id");
-            String password = rs.getString("password");
+			ResultSet rs = ps.executeQuery();
+			rs.next();
+
+			if(rs.getString(1).equals(id)) {
+				return true;
+			}
+
 		}catch (SQLException e) {
 			System.out.println("MySQLに接続できませんでした。");
 		}finally {
@@ -39,29 +44,27 @@ public class UserDao {
 				}
 			}
 		}
-		return user;
+		return false;
 	}
 
 	//新規登録
-	public UserDto getUser(String id, String name, String email, String password) {
-		Connection con = null;
-		String url = "jdbc:mysql://localhost:3306/gurushibu?serverTimezone=JST";
-    	UserDto user = null;
+	public void addUser(String id, String name, String email, String password) {
 
         try {
-        	con = DriverManager.getConnection(url,"root","admin");
+        	con = DriverManager.getConnection(url,"root","ryo223124830");
         	System.out.println("MySQLに接続できました。");
-        	Statement stm = con.createStatement();
-        	String sql = "insert * into users values(?, ?, ?, ?)" ;
-            ResultSet rs = stm.executeQuery(sql);
+        	con.setAutoCommit(false);
+        	String sql = "INSERT INTO users values(?, ?, ?, ?)" ;
+        	ps = con.prepareStatement(sql);
+            ps.setString(1, id);
+            ps.setString(2, name);
+            ps.setString(3, email);
+            ps.setString(4, password);
 
-            while (rs.next()) {
-    			String userId = rs.getString("user_id");
-    			String userName = rs.getString("user_name");
-    			String mailAddress = rs.getString("mail_address");
-    			String pass = rs.getString("password");
-    			user = new UserDto(userId,userName,mailAddress,pass);
-            }
+          //INSERT文を実行する
+            ps.executeUpdate();
+            //コミット
+            con.commit();
 
         } catch (SQLException e) {
         	System.out.println("MySQLに接続できませんでした。");
@@ -76,33 +79,28 @@ public class UserDao {
 				}
 			}
         }
-        return user;
     }
 
 	//ログイン処理
-	public int regUser(String id, String password) {
-		Connection con = null;
-		String url = "jdbc:mysql://localhost:3306/gurushibu?serverTimezone=JST";
-    	int result = 0;
+	public boolean regUser(String id, String password) {
 
         try {
-        	con = DriverManager.getConnection(url,"root","admin");
+        	con = DriverManager.getConnection(url,"root","ryo223124830");
         	System.out.println("MySQLに接続できました。");
-            String sql  = "select * from users (user_id, password) VALUES (?, ?)";
+        	String sql = "select user_id from users where user_id = ? AND password = ?;";
             PreparedStatement ps= con.prepareStatement(sql);
 
             ps.setString(1, id);
             ps.setString(2, password);
 
-            int r = ps.executeUpdate();
+            ResultSet rs = ps.executeQuery();
+			rs.next();
 
-            if(r != 0) {
-                System.out.println("ログイン成功！");
-            } else {
-                System.out.println("ログイン失敗( ﾉД`)ｼｸｼｸ…");
-            }
-
-
+			if(rs.getString(1).equals(id)) {
+				return true;
+			}else {
+				return false;
+			}
         } catch (SQLException e) {
         	System.out.println("MySQLに接続できませんでした。");
         } finally {
@@ -116,7 +114,7 @@ public class UserDao {
 				}
 			}
         }
-        return result;
+        return false;
     }
 
 
