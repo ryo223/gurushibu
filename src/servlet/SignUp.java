@@ -41,18 +41,15 @@ public class SignUp extends HttpServlet {
 		HttpSession session = request.getSession();
 		session.setAttribute("loginUser", user_id);
 		// パスワードと確認用パスワードが一致していて、アカウントが登録済みでないかをチェック
-		if(!password.equals(retype_password) || userDao.findUser(user_id) == true){// || AccountDAOでAccountテーブルに入力されたuser_idがないかをチェック)) {
+		if(!password.equals(retype_password) || userDao.findUser(user_id) == true){
 			response.sendRedirect("TopPage");
 		}else {
 
 		userDao.addUser(user_id, user_name, mail_address, password);
 
-
-
 		RequestDispatcher dispatcher = request.getRequestDispatcher("SearchForm/search.html");
 		dispatcher.forward(request, response);
 
 		}
-
 	}
 }

@@ -33,6 +33,7 @@ public class UserDao {
 
 		}catch (SQLException e) {
 			System.out.println("MySQLに接続できませんでした。");
+			return true;
 		}finally {
 			if(con != null) {
 				try {
