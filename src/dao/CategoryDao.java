@@ -9,7 +9,7 @@ import java.sql.Statement;
 public class CategoryDao {
 	//カテゴリーとレストランは一対多の関係で処理を行う
 
-	//PostDaoから記事のidを取得する
+	//RestaurantDaoからレストランのidを取得する
 
 	//カテゴリーidからカテゴリーを引く
 	public  String getCategory(String categoryId) {

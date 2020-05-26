@@ -7,11 +7,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Course_menuDao {
+	Connection con = null;
+	String url = "jdbc:mysql://localhost:3306/gurushibu?serverTimezone=JST";
+	
 	//course_idからcourse_menuテーブルを取得する
-	public  String getRestaurant(int courseId) {
-		Connection con = null;
+	public  String getCourseMenu(int courseId) {
 		String course = null;
-		String url = "jdbc:mysql://localhost:3306/gurushibu?serverTimezone=JST";
+		
 		try {
 			con = DriverManager.getConnection(url,"root","admin");
 			System.out.println("MySQLに接続できました。");
