@@ -35,5 +35,5 @@
  	<br>
 <% } %>
 </div>
-<h2><span style="color:whitesmoke"><a class="no-color-change" href="#">ログアウト</a></span></h2>
+<h2><a class="no-color-change" href="#"><span style="color:whitesmoke">ログアウト</span></a></h2>
 </body>

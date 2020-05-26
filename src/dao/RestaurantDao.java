@@ -12,7 +12,7 @@ import java.util.List;
 public class RestaurantDao {
 
 	PreparedStatement ps = null;
-	String url = "jdbc:mysql://localhost:3306/gurushibu";
+	String url = "jdbc:mysql://localhost:3306/gutusibu?serverTimezone=JST";
 	Connection con = null;
 
 	//Restaurant_idからrestaurantテーブルを取得する
@@ -21,7 +21,7 @@ public class RestaurantDao {
 		String restaurantArr[] = new String[3];
 
 		try {
-			con = DriverManager.getConnection(url,"root","ryo223124830");
+			con = DriverManager.getConnection(url,"root","admin");
 			System.out.println("MySQLに接続できました。");
 			String sql = "select restaurant_address,restaurant_mail_address,restaurant_tel_num from restaurant where restaurant_name = ?;";
 			ps = con.prepareStatement(sql);
@@ -56,7 +56,7 @@ public class RestaurantDao {
 
 		List<String> restaurantList = new ArrayList<String>();
 		try {
-			con = DriverManager.getConnection(url,"root","ryo223124830");
+			con = DriverManager.getConnection(url,"root","admin");
 
 			//前方部分が一致する処理
 			String sql = "select restaurant_name from restaurant where restaurant_name = ? ";
