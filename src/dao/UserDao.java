@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class UserDao {
 
-	String url = "jdbc:mysql://localhost:3306/gurushibu";
+	String url = "jdbc:mysql://localhost:3306/gurusibu?serverTimezone=JST";
 
 	Connection con = null;
 	PreparedStatement ps = null;
@@ -17,7 +17,7 @@ public class UserDao {
 
 		try {
 			//mysqlパスワードは各自書き換えてください。
-			con = DriverManager.getConnection(url,"root","ryo223124830");
+			con = DriverManager.getConnection(url,"root","admin");
         	System.out.println("MySQLに接続できました。");
         	String sql = "select user_id from users where user_id = ?;";
 
@@ -52,7 +52,7 @@ public class UserDao {
 	public void addUser(String id, String name, String email, String password) {
 
         try {
-        	con = DriverManager.getConnection(url,"root","ryo223124830");
+        	con = DriverManager.getConnection(url,"root","admin");
         	System.out.println("MySQLに接続できました。");
         	con.setAutoCommit(false);
         	String sql = "INSERT INTO users values(?, ?, ?, ?)" ;
@@ -86,7 +86,7 @@ public class UserDao {
 	public boolean regUser(String id, String password) {
 
         try {
-        	con = DriverManager.getConnection(url,"root","ryo223124830");
+        	con = DriverManager.getConnection(url,"root","admin");
         	System.out.println("MySQLに接続できました。");
         	String sql = "select user_id from users where user_id = ? AND password = ?;";
             PreparedStatement ps= con.prepareStatement(sql);
