@@ -1,5 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="dao.RestaurantDao" %>
+
+ <%
+	request.setCharacterEncoding("utf-8");
+	String restaurant_name = request.getParameter("restaurant_name");
+	RestaurantDao restaurant = new RestaurantDao();
+	String loginUser = (String) session.getAttribute("loginUser");
+
+	String[] restaurantArr = restaurant.findRestaurant(restaurant_name);
+%>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -45,12 +55,12 @@
 
 			<div class="row">
 				<div class="col-sm-4 col-xs-12">
-					<div id="gtco-logo"><a href="index.jsp">RESTAURANT - TOP</a></div>
+					<div id="gtco-logo"><a href="index.jsp?restaurant_name=<%=restaurant_name %>">RESTAURANT - TOP</a></div>
 				</div>
 				<div class="col-xs-8 text-right menu-1">
 					<ul>
 						<li><a href="menu.jsp">Menu</a></li>
-						<li class="active"><a href="contact.jsp">Contact</a></li> <!--class="btn-cta"-->
+						<li class="active"><a href="contact.jsp?restaurant_name=<%=restaurant_name %>">Contact</a></li> <!--class="btn-cta"-->
 						<li><a href="#"><span>Logout</span></a></li> <!-- ログアウト.jsp -->
 					</ul>
 				</div>
@@ -94,7 +104,7 @@
 								</figure>
 								<div class="fh5co-text">
 									<h2>Googlemapとか店舗の雰囲気の写真？</h2>
-									<p><span class="price cursive-font">店舗名</span></p>
+									<p><span class="price cursive-font"><%= restaurant_name %></span></p>
 								</div>
 							</a>
 
@@ -104,9 +114,9 @@
 					<div class="gtco-contact-info">
 						<h3>Location</h3>
 						<ul>
-							<li class="address">位置情報<br>東京都 渋谷区？</li>
-							<li class="phone"><a href="#">+ 1234 5678 90</a></li>
-							<li class="email"><a href="#">gurushibu@mail.com</a></li>
+							<li class="address">位置情報<br><%=restaurantArr[0] %></li>
+							<li class="phone"><a href="#">+ 0<%=restaurantArr[2] %></a></li>
+							<li class="email"><a href="#"><%=restaurantArr[1] %></a></li>
 							<li class="url"><a href="index.jsp">TOP-PAGE</a></li>
 						</ul>
 					</div>

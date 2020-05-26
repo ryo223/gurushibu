@@ -16,25 +16,25 @@ public class RestaurantDao {
 	Connection con = null;
 
 	//Restaurant_idからrestaurantテーブルを取得する
-	public  RestaurantDto findRestaurant(int restaurantId) {
+	public String[] findRestaurant(String restaurant_name) {
 
-		RestaurantDto dto = new RestaurantDto();
+		String restaurantArr[] = new String[3];
 
 		try {
-			con = DriverManager.getConnection(url,"root","admin");
+			con = DriverManager.getConnection(url,"root","ryo223124830");
 			System.out.println("MySQLに接続できました。");
-			Statement stm = con.createStatement();
-			String sql = "select * from restaurant where restaurant_id = " + restaurantId;
-			ResultSet rs = stm.executeQuery(sql);
-			System.out.println("SQLを実行");
-			//while(rs.next()) {
-			rs.next();
-			dto.setName(rs.getString("restaurant_name"));
-			dto.setAddress(rs.getString("restaurant_address"));
-			dto.setMailaddress(rs.getString("restaurant_mail_address"));
-			dto.setPhonenumber(rs.getInt("restaurant_tel_num"));
-			dto.setCategoryId(rs.getString("category_id"));
+			String sql = "select restaurant_address,restaurant_mail_address,restaurant_tel_num from restaurant where restaurant_name = ?;";
+			ps = con.prepareStatement(sql);
 
+			ps.setString(1, restaurant_name);
+
+			ResultSet rs = ps.executeQuery();
+
+			if(rs.next()){
+                restaurantArr[0] = rs.getString("restaurant_address");
+                restaurantArr[1] = rs.getString("restaurant_mail_address");
+                restaurantArr[2] = rs.getString("restaurant_tel_num");
+           }
 		}catch (SQLException e) {
 			System.out.println("MySQLに接続できませんでした。");
 		}finally {
@@ -48,7 +48,7 @@ public class RestaurantDao {
 				}
 			}
 		}
-		return dto;
+		return restaurantArr;
 	}
 
 
