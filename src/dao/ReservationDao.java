@@ -11,10 +11,10 @@ import java.sql.Statement;
 
 public class ReservationDao {
 	String url = "jdbc:mysql://localhost:3306/gurushibu?serverTimezone=JST";
-	
+
 	Connection con = null;
 	PreparedStatement ps = null;
-	
+
 	//res_idからreservationテーブルを取得する
 	public  ReservationDto findReservation(int resId) {
 		ReservationDto res = new ReservationDto();
