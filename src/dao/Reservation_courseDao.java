@@ -12,7 +12,7 @@ import java.util.List;
 public class Reservation_courseDao {
 	//Reservationとcourseは多対多の関係で処理を行う
 	Connection con = null;
-	String url = "jdbc:mysql://localhost:3306/gurushibu";
+	String url = "jdbc:mysql://localhost:3306/gurushibu?serverTimezone=JST";
 	PreparedStatement ps = null;
 	//2 reservation_idからreservation_courseテーブルを引く
 	public int getReservationCourse(int reservationId) {
