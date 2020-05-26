@@ -12,7 +12,7 @@ import java.util.List;
 public class RestaurantDao {
 
 	PreparedStatement ps = null;
-	String url = "jdbc:mysql://localhost:3306/gutusibu?serverTimezone=JST";
+	String url = "jdbc:mysql://localhost:3306/gurushibu?serverTimezone=JST";
 	Connection con = null;
 
 	//Restaurant_idからrestaurantテーブルを取得する

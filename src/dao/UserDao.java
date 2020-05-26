@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class UserDao {
 
-	String url = "jdbc:mysql://localhost:3306/gurusibu?serverTimezone=JST";
+	String url = "jdbc:mysql://localhost:3306/gurushibu?serverTimezone=JST";
 
 	Connection con = null;
 	PreparedStatement ps = null;
