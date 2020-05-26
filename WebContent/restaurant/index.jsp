@@ -1,5 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %>
+<%@ page import="dao.Reservation_courseDao" %>
+
+<%
+	request.setCharacterEncoding("utf-8");
+	String restaurant_name = request.getParameter("restaurant_name");
+	Reservation_courseDao course = new Reservation_courseDao();
+	List<String> courseList = course.getCourse(restaurant_name);
+	String loginUser = (String) session.getAttribute("loginUser");
+ %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -45,12 +55,12 @@
 
 			<div class="row">
 				<div class="col-sm-4 col-xs-12">
-					<div id="gtco-logo"><a href="index.jsp">RESTAURANT - TOP</a></div>
+					<div id="gtco-logo"><a href="index.jsp?restaurant_name=<%=restaurant_name %>">RESTAURANT - TOP</a></div>
 				</div>
 				<div class="col-xs-8 text-right menu-1">
 					<ul>
 						<li><a href="menu.jsp">Menu</a></li><!--class="btn-cta"-->
-						<li><a href="contact.jsp">Contact</a></li>
+						<li><a href="contact.jsp?restaurant_name=<%=restaurant_name %>">Contact</a></li>
 						<li><a href="#">Logout</a></li> <!-- ログアウト.jsp -->
 					</ul>
 				</div>
@@ -68,7 +78,7 @@
 
 					<div class="row row-mt-15em">
 						<div class="col-md-7 mt-text animate-box" data-animate-effect="fadeInUp">
-							<h1 class="cursive-font">店名を記入</h1>
+							<h1 class="cursive-font"><%= restaurant_name %></h1>
 						</div>
 						<div class="col-md-4 col-md-push-1 animate-box" data-animate-effect="fadeInRight">
 							<div class="form-wrap">
@@ -77,9 +87,10 @@
 									<div class="tab-content">
 										<div class="tab-content-inner active" data-content="signup">
 											<h3 class="cursive-font">席を予約する</h3>
-											<form action="#">
+											<form action="/gurusibu/RestaurantReservation" method="post">
 												<div class="row form-group">
 													<div class="col-md-12">
+
 														<label for="activities">Persons</label>
 														<select name="#" id="activities" class="form-control">
 															<option value="">人数を選択</option>
@@ -96,10 +107,9 @@
 														<label for="activities">Course</label>
 														<select name="#" id="activities" class="form-control">
 															<option value="">コースを選択</option>
-															<option value="">A</option>
-															<option value="">B</option>
-															<option value="">C</option>
-															<option value="">D</option>
+															<% for(int i = 0; i < courseList.size(); i++) {%>
+															<option value="<%= courseList.get(i) %>"><%= courseList.get(i) %></option>
+															<% } %>
 															<option value="">コースを選択しない</option>
 														</select>
 													</div>
@@ -122,6 +132,7 @@
 													<!-- reserveResult.jsp -->
 														<input type="submit" class="btn btn-primary btn-block" value="予約する">
 													</div>
+
 												</div>
 											</form>
 										</div>

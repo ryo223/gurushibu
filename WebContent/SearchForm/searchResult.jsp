@@ -27,7 +27,11 @@
 <h1><span style="color:whitesmoke">検索結果</span></h1>
 <div style="text-align:center">
 <% for(int i = 0; i < restaurantList.size(); i++) {%>
- 	<a href="restaurant/contact.jsp?restaurant_name=<%=restaurantList.get(i) %>"><%=restaurantList.get(i) %></a>
+<h3><a class="no-color-change" style="color:whitesmoke" href="restaurant/contact.jsp?restaurant_name=<%=restaurantList.get(i) %>">
+<%=restaurantList.get(i) %>
+</a></h3>
+
+ 	<!--  <a href="restaurant/contact.jsp?restaurant_name=<%=restaurantList.get(i) %>"><%=restaurantList.get(i) %></a>-->
  	<br>
 <% } %>
 </div>

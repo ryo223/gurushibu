@@ -25,7 +25,6 @@ public class RestaurantDao {
 			System.out.println("MySQLに接続できました。");
 			String sql = "select restaurant_address,restaurant_mail_address,restaurant_tel_num from restaurant where restaurant_name = ?;";
 			ps = con.prepareStatement(sql);
-
 			ps.setString(1, restaurant_name);
 
 			ResultSet rs = ps.executeQuery();
