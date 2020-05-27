@@ -87,43 +87,43 @@
 									<div class="tab-content">
 										<div class="tab-content-inner active" data-content="signup">
 											<h3 class="cursive-font">席を予約する</h3>
-											<form action="/gurusibu/RestaurantReservation" method="post">
+											<form action="/gurusibu/RestaurantReservation?restaurant_name=<%=restaurant_name %>" method="post">
 												<div class="row form-group">
 													<div class="col-md-12">
 
 														<label for="activities">Persons</label>
-														<select name="#" id="activities" class="form-control">
-															<option value="">人数を選択</option>
-															<option value="">1</option>
-															<option value="">2</option>
-															<option value="">3</option>
-															<option value="">4</option>
-															<option value="">5+</option>
+														<select name="persons" id="activities" class="form-control">
+															<option value="0">人数を選択</option>
+															<option value="1">1</option>
+															<option value="2">2</option>
+															<option value="3">3</option>
+															<option value="4">4</option>
+															<option value="5">5+</option>
 														</select>
 													</div>
 												</div>
 												<div class="row form-group">
 													<div class="col-md-12">
 														<label for="activities">Course</label>
-														<select name="#" id="activities" class="form-control">
-															<option value="">コースを選択</option>
+														<select name="course_name" id="activities" class="form-control">
+															<option value="0">コースを選択</option>
 															<% for(int i = 0; i < courseList.size(); i++) {%>
 															<option value="<%= courseList.get(i) %>"><%= courseList.get(i) %></option>
 															<% } %>
-															<option value="">コースを選択しない</option>
+															<option value="0">コースを選択しない</option>
 														</select>
 													</div>
 												</div>
 												<div class="row form-group">
 													<div class="col-md-12">
 														<label for="date-start">Date</label>
-														<input type="text" id="date" class="form-control">
+														<input type="text" name="date" id="date" class="form-control">
 													</div>
 												</div>
 												<div class="row form-group">
 													<div class="col-md-12">
 														<label for="date-start">Time</label>
-														<input type="text" id="time" class="form-control">
+														<input type="text" name="time" id="time" class="form-control">
 													</div>
 												</div>
 

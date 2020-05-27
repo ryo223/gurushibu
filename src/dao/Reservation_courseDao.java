@@ -14,6 +14,43 @@ public class Reservation_courseDao {
 	Connection con = null;
 	String url = "jdbc:mysql://localhost:3306/gurushibu";
 	PreparedStatement ps = null;
+
+	public boolean addReservationCourse(String res_date,String res_time,String restaurant_name,int course_id) {
+
+		try {
+        	con = DriverManager.getConnection(url,"root","ryo223124830");
+
+        	con.setAutoCommit(false);
+        	String sql = "INSERT INTO reservation_course values(?, ?, ?, ?)" ;
+        	ps = con.prepareStatement(sql);
+            ps.setString(1, res_date);
+            ps.setString(2, res_time);
+            ps.setString(3, restaurant_name);
+            ps.setInt(4, course_id);
+
+          //INSERT文を実行する
+            ps.executeUpdate();
+            //コミット
+            con.commit();
+
+        } catch (SQLException e) {
+        	System.out.println("MySQLに接続できませんでした。");
+        	return false;
+        } finally {
+        	if(con != null) {
+				try {
+					con.close();
+				}catch(SQLException e) {
+					System.out.println("MySQLのクローズに失敗しました。");
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+        }
+		return true;
+	}
+
+
 	//2 reservation_idからreservation_courseテーブルを引く
 	public int getReservationCourse(int reservationId) {
 		int reservation_course = 0;
@@ -46,13 +83,12 @@ public class Reservation_courseDao {
 		return reservation_course;
 	}
 
-	//３．コースのidでコーステーブルを引く
+	//３．コース名でコーステーブルを引く
 	public List<String> getCourse(String restaurant_name) {
 
 		List<String> courseList = new ArrayList<String>();
 		try {
 			con = DriverManager.getConnection(url,"root","ryo223124830");
-			System.out.println("MySQLに接続できました。");
 			String sql = "select course_name from course_menu where restaurant_name = ?;";
 			ps = con.prepareStatement(sql);
             ps.setString(1, restaurant_name);
